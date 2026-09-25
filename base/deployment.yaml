@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+  labels:
+    app: vllm
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: vllm
+
+  template:
+    metadata:
+      labels:
+        app: vllm
+
+    spec:
+      containers:
+        - name: vllm
+          image: ghcr.io/sachin001234/vllm-platform:latest
+
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+
+          args:
+            - --model
+            - Qwen/Qwen2.5-1.5B-Instruct-AWQ
+            - --quantization
+            - awq
+            - --gpu-memory-utilization
+            - "0.75"
+            - --max-model-len
+            - "512"
+            - --enforce-eager

@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+
+spec:
+  template:
+    spec:
+      containers:
+        - name: vllm
+          resources:
+            limits:
+              nvidia.com/gpu: 1
