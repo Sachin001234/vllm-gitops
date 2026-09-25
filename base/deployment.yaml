@@ -25,6 +25,24 @@ spec:
             - containerPort: 8000
               protocol: TCP
 
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+
           args:
             - --model
             - Qwen/Qwen2.5-1.5B-Instruct-AWQ
