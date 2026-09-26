@@ -10,3 +10,4 @@ namespace: vllm-prod
 
 patches:
   - path: gpu-patch.yaml
+  - path: secret-env-patch.yaml

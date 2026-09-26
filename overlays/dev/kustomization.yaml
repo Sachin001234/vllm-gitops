@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - ../../base
+patches:
+  - path: secret-env-patch.yaml
 
 namePrefix: dev-
 namespace: vllm-dev
