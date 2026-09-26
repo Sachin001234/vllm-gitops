@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - ../../base
+  - pdb.yaml
 
 namePrefix: prod-
 namespace: vllm-prod
@@ -11,3 +12,7 @@ namespace: vllm-prod
 patches:
   - path: gpu-patch.yaml
   - path: secret-env-patch.yaml
+  - path: replica-patch.yaml
+  - path: rolling-update-patch.yaml
+  - path: topology-patch.yaml
+  - path: resources-patch.yaml
