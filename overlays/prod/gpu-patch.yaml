@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vllm
-
 spec:
   template:
     spec:
+      nodeSelector:
+        accelerator: nvidia-gpu
       containers:
         - name: vllm
           resources:
