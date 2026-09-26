@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+spec:
+  template:
+    spec:
+      containers:
+        - name: vllm
+          args:
+            - --model
+            - Qwen/Qwen2.5-1.5B-Instruct-AWQ
+            - --quantization
+            - awq
+            - --gpu-memory-utilization
+            - "0.75"
+            - --max-model-len
+            - "512"
+            - --enforce-eager
