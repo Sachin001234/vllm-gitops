@@ -4,6 +4,9 @@ metadata:
   name: vllm
   labels:
     app: vllm
+  annotations:
+    gitops.example.com/managed-by: argocd
+
 spec:
   replicas: 1
 
