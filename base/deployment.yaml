@@ -4,6 +4,7 @@ metadata:
   name: vllm
   labels:
     app: vllm
+    gitops-test: automated-sync
   annotations:
     gitops.example.com/managed-by: argocd
 
