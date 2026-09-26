@@ -24,6 +24,12 @@ spec:
       containers:
         - name: vllm
           image: ghcr.io/sachin001234/vllm-platform:b2fdadc53eab4c42e7ca657400a114f8a2311722
+          env:
+            - name: VLLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: vllm-api-secret
+                  key: VLLM_API_KEY
 
           ports:
             - containerPort: 8000
