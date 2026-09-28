@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: vllm-slack
+  namespace: monitoring
+spec:
+  route:
+    receiver: vllm-slack
+    groupBy:
+      - alertname
+    groupWait: 10s
+    groupInterval: 5m
+    repeatInterval: 4h
+    matchers:
+      - name: app
+        value: vllm
+        matchType: "="
+
+  receivers:
+    - name: vllm-slack
+      slackConfigs:
+        - apiURL:
+            name: slack-webhook
+            key: webhook-url
+          channel: "#vllm-alerts"
+          sendResolved: true
