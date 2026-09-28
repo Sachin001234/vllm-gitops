@@ -9,7 +9,6 @@ resources:
 patches:
   - path: secret-env-patch.yaml
   - path: vllm-runtime-patch.yaml
-  - path: rollback-test-patch.yaml
 
 namePrefix: dev-
 namespace: vllm-dev
