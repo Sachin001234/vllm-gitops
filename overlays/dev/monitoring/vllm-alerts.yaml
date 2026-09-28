@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: vllm-alerts
+  namespace: vllm-dev
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: vllm.rules
+      rules:
+        - alert: VLLMPodDown
+          expr: >-
+            kube_deployment_status_replicas_available{
+              namespace="vllm-dev",
+              deployment="dev-vllm"
+            } < 1
+          for: 2m
+          labels:
+            severity: critical
+            app: vllm
+          annotations:
+            summary: "vLLM deployment is unavailable"
+            description: "The vLLM deployment has no available replicas for more than 2 minutes."

@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - ../../base
   - vllm-servicemonitor.yaml
+  - monitoring/vllm-alerts.yaml
 patches:
   - path: secret-env-patch.yaml
   - path: vllm-runtime-patch.yaml
