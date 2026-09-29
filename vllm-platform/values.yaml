@@ -58,7 +58,7 @@ ingress:
   enabled: true
   className: nginx
 
-  host: vllm.local
+  host: vllm-helm.local
 
   annotations: {}
 
