@@ -1,0 +1,8 @@
+apiVersion: v2
+name: vllm-platform
+description: Helm chart for the vLLM AI inference platform with React frontend
+
+type: application
+
+version: 0.1.0
+appVersion: "1.0.0"

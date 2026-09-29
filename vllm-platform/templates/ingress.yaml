@@ -1,0 +1,37 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "vllm-platform.fullname" . }}
+  labels:
+    {{- include "vllm-platform.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          # vLLM API
+          - path: /v1
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "vllm-platform.fullname" . }}-vllm
+                port:
+                  number: {{ .Values.vllm.service.port }}
+
+          # React frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "vllm-platform.fullname" . }}-frontend
+                port:
+                  number: {{ .Values.frontend.service.port }}
+{{- end }}

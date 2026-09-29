@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vllm-platform.fullname" . }}-vllm
+  labels:
+    {{- include "vllm-platform.labels" . | nindent 4 }}
+    app: vllm
+
+spec:
+  type: {{ .Values.vllm.service.type }}
+
+  selector:
+    {{- include "vllm-platform.selectorLabels" . | nindent 4 }}
+    app: vllm
+
+  ports:
+    - name: http
+      port: {{ .Values.vllm.service.port }}
+      targetPort: 8000
+      protocol: TCP

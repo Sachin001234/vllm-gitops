@@ -1,0 +1,66 @@
+# vLLM configuration
+vllm:
+  image:
+    repository: ghcr.io/sachin001234/vllm-platform
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  replicaCount: 1
+
+  model: Qwen/Qwen2.5-1.5B-Instruct-AWQ
+
+  service:
+    type: ClusterIP
+    port: 8000
+
+  resources:
+    requests:
+      cpu: "1"
+      memory: "2Gi"
+    limits:
+      cpu: "2"
+      memory: "4Gi"
+
+  gpu:
+    enabled: true
+    count: 1
+
+  runtime:
+    gpuMemoryUtilization: "0.75"
+    maxModelLen: 512
+    enforceEager: true
+
+
+# React frontend configuration
+frontend:
+  image:
+    repository: ghcr.io/sachin001234/vllm-platform-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: nginx
+
+  host: vllm.local
+
+  annotations: {}
+
+  tls:
+    enabled: false

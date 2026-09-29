@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vllm-platform.fullname" . }}-vllm
+  labels:
+    {{- include "vllm-platform.labels" . | nindent 4 }}
+    app: vllm
+spec:
+  replicas: {{ .Values.vllm.replicaCount }}
+
+  selector:
+    matchLabels:
+      {{- include "vllm-platform.selectorLabels" . | nindent 6 }}
+      app: vllm
+
+  template:
+    metadata:
+      labels:
+        {{- include "vllm-platform.selectorLabels" . | nindent 8 }}
+        app: vllm
+
+    spec:
+      {{- if .Values.vllm.gpu.enabled }}
+      nodeSelector:
+        accelerator: nvidia-gpu
+      {{- end }}
+
+      containers:
+        - name: vllm
+          image: "{{ .Values.vllm.image.repository }}:{{ .Values.vllm.image.tag }}"
+          imagePullPolicy: {{ .Values.vllm.image.pullPolicy }}
+
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+
+          args:
+            - --model
+            - {{ .Values.vllm.model | quote }}
+            - --quantization
+            - awq
+            - --gpu-memory-utilization
+            - {{ .Values.vllm.runtime.gpuMemoryUtilization | quote }}
+            - --max-model-len
+            - {{ .Values.vllm.runtime.maxModelLen | quote }}
+            {{- if .Values.vllm.runtime.enforceEager }}
+            - --enforce-eager
+            {{- end }}
+
+          resources:
+            requests:
+              cpu: {{ .Values.vllm.resources.requests.cpu | quote }}
+              memory: {{ .Values.vllm.resources.requests.memory | quote }}
+            limits:
+              cpu: {{ .Values.vllm.resources.limits.cpu | quote }}
+              memory: {{ .Values.vllm.resources.limits.memory | quote }}
+              {{- if .Values.vllm.gpu.enabled }}
+              nvidia.com/gpu: {{ .Values.vllm.gpu.count }}
+              {{- end }}
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
