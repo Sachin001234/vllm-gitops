@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: vllm
-          image: ghcr.io/sachin001234/vllm-platform:b2fdadc53eab4c42e7ca657400a114f8a2311722
+          image: ghcr.io/sachin001234/vllm-platform:30f86a3d9cda8b6dc0a01b2f90132c16a03c77e9
 
           ports:
             - containerPort: 8000
