@@ -35,7 +35,7 @@ vllm:
 frontend:
   image:
     repository: ghcr.io/sachin001234/vllm-platform-frontend
-    tag: latest
+    tag: helm
     pullPolicy: IfNotPresent
 
   replicaCount: 1
